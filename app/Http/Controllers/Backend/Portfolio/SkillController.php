@@ -25,7 +25,10 @@ class SkillController extends Controller
         $user = User::first();
         $skills = $this->portfolioService->getSkills($user);
 
-        return view('backend.portfolio.skills.index', compact('skills'));
+        return view('backend.portfolio.skills.index', compact('skills'))
+            ->with('breadcrumbs', [
+                'title' => __('Skills'),
+            ]);
     }
 
     /**

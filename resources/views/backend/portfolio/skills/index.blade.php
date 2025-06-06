@@ -4,23 +4,16 @@
 
 @section('admin-content')
     <div class="p-4 sm:p-6 lg:p-8">
-        <div class="sm:flex sm:items-center sm:justify-between mb-8">
-            <div>
-                <h2 class="text-2xl font-bold leading-7 text-gray-900 dark:text-white sm:truncate sm:text-3xl sm:tracking-tight">
-                    {{ __('Skills') }}
-                </h2>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    {{ __('Manage your portfolio skills.') }}
-                </p>
-            </div>
-            <div class="mt-4 sm:mt-0">
-                @can('portfolio.create')
-                    <a href="{{ route('admin.portfolio.skills.create') }}" class="btn-primary">
+        <x-breadcrumbs :breadcrumbs="$breadcrumbs">
+            <x-slot name="title_after">
+                @if (auth()->user()->can('portfolio.create'))
+                    <a href="{{ route('admin.portfolio.skills.create') }}" class="btn-primary ml-2">
+                        <i class="bi bi-plus-circle mr-2"></i>
                         {{ __('Add Skill') }}
                     </a>
-                @endcan
-            </div>
-        </div>
+                @endif
+            </x-slot>
+        </x-breadcrumbs>
 
         <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden">
             <div class="p-6">

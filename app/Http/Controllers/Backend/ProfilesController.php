@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Enums\ActionType;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,9 +16,9 @@ class ProfilesController extends Controller
 {
     public function edit(): Renderable
     {
-        $this->checkAuthorization(auth()->user(), ['profile.edit'], true);
+        $this->checkAuthorization(Auth::user(), ['profile.edit'], true);
 
-        $user = Auth::user();
+        $user = User::first();
 
         return view('backend.pages.profile.edit', compact('user'))
             ->with([
@@ -29,12 +30,12 @@ class ProfilesController extends Controller
 
     public function update(Request $request): RedirectResponse
     {
-        $this->checkAuthorization(auth()->user(), ['profile.edit'], true);
+        $this->checkAuthorization(Auth::user(), ['profile.edit'], true);
 
         // Prevent modification of super admin in demo mode.
-        $this->preventSuperAdminModification(auth()->user(), ['profile.edit']);
+        $this->preventSuperAdminModification(Auth::user(), ['profile.edit']);
 
-        $user = Auth::user();
+        $user = User::first();
 
         $request->validate([
             'name' => 'required|string|max:255',

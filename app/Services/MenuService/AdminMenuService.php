@@ -105,6 +105,60 @@ class AdminMenuService
             'permissions' => 'dashboard.view'
         ]);
 
+        // Portfolio Menu
+        $this->addMenuItem([
+            'label' => __('Portfolio'),
+            'iconClass' => 'bi-suitcase-lg',
+            'id' => 'portfolio-submenu',
+            'active' => Route::is('admin.portfolio.*'),
+            'priority' => 5,
+            'permissions' => ['portfolio.view', 'portfolio.create', 'portfolio.edit', 'portfolio.delete'],
+            'children' => [
+                [
+                    'label' => __('Profile'),
+                    'route' => route('admin.portfolio.profile.index'),
+                    'active' => Route::is('admin.portfolio.profile.*'),
+                    'priority' => 10,
+                    'permissions' => 'portfolio.view'
+                ],
+                [
+                    'label' => __('Skills'),
+                    'route' => route('admin.portfolio.skills.index'),
+                    'active' => Route::is('admin.portfolio.skills.*'),
+                    'priority' => 20,
+                    'permissions' => 'portfolio.view'
+                ],
+                [
+                    'label' => __('Projects'),
+                    'route' => route('admin.portfolio.projects.index'),
+                    'active' => Route::is('admin.portfolio.projects.*'),
+                    'priority' => 30,
+                    'permissions' => 'portfolio.view'
+                ],
+                [
+                    'label' => __('Experience'),
+                    'route' => route('admin.portfolio.experiences.index'),
+                    'active' => Route::is('admin.portfolio.experiences.*'),
+                    'priority' => 40,
+                    'permissions' => 'portfolio.view'
+                ],
+                [
+                    'label' => __('Social Links'),
+                    'route' => route('admin.portfolio.social-links.index'),
+                    'active' => Route::is('admin.portfolio.social-links.*'),
+                    'priority' => 50,
+                    'permissions' => 'portfolio.view'
+                ],
+                [
+                    'label' => __('Contact Messages'),
+                    'route' => route('admin.portfolio.contacts.index'),
+                    'active' => Route::is('admin.portfolio.contacts.*'),
+                    'priority' => 60,
+                    'permissions' => 'portfolio.view'
+                ],
+            ]
+        ]);
+
         // Content Management Menu from registered post types
         try {
             $this->registerPostTypesInMenu();

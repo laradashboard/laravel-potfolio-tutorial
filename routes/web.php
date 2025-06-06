@@ -17,6 +17,14 @@ use App\Http\Controllers\Backend\PostsController;
 use App\Http\Controllers\Backend\TermsController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Frontend\PortfolioController;
+use App\Http\Controllers\Backend\Portfolio\ProfileController;
+use App\Http\Controllers\Backend\Portfolio\ContactController;
+use App\Http\Controllers\Backend\Portfolio\ExperienceController;
+use App\Http\Controllers\Backend\Portfolio\ProjectController;
+use App\Http\Controllers\Backend\Portfolio\SkillController;
+use App\Http\Controllers\Backend\Portfolio\SocialLinkController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,8 +36,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'HomeController@redirectAdmin')->name('index');
 Route::get('/home', 'HomeController@index')->name('home');
+
+// Portfolio Frontend Routes.
+Route::group(['as' => 'portfolio.'], function () {
+    Route::get('/', [PortfolioController::class, 'index'])->name('index');
+    Route::get('/projects', [PortfolioController::class, 'projects'])->name('projects');
+    Route::get('/projects/{project:slug}', [PortfolioController::class, 'project'])->name('project');
+    Route::get('/contact', [PortfolioController::class, 'contact'])->name('contact');
+    Route::post('/contact', [PortfolioController::class, 'submitContact'])->name('submit-contact');
+    Route::get('/cv', [PortfolioController::class, 'cv'])->name('cv');
+});
 
 /**
  * Admin routes.
@@ -86,6 +103,18 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::put('/terms/{taxonomy}/{id}', [TermsController::class, 'update'])->name('terms.update');
     Route::delete('/terms/{taxonomy}/{id}', [TermsController::class, 'destroy'])->name('terms.destroy');
     Route::delete('/terms/{taxonomy}/delete/bulk-delete', [TermsController::class, 'bulkDelete'])->name('terms.bulk-delete');
+
+    // Portfolio Routes
+    Route::group(['prefix' => 'portfolio', 'as' => 'portfolio.'], function () {
+        Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+        Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::resource('skills', SkillController::class);
+        Route::resource('projects', ProjectController::class);
+        Route::resource('experiences', ExperienceController::class);
+        Route::resource('social-links', SocialLinkController::class);
+        Route::resource('contacts', ContactController::class)->only(['index', 'show', 'destroy']);
+    });
 
     // Editor Upload Route
     Route::post('/editor/upload', [App\Http\Controllers\Backend\EditorController::class, 'upload'])->name('editor.upload');

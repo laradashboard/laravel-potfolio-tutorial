@@ -25,6 +25,15 @@ class PermissionService
                 ],
             ],
             [
+                'group_name' => 'portfolio',
+                'permissions' => [
+                    'portfolio.create',
+                    'portfolio.view',
+                    'portfolio.edit',
+                    'portfolio.delete',
+                ],
+            ],
+            [
                 'group_name' => 'blog',
                 'permissions' => [
                     'blog.create',
